@@ -1,0 +1,5 @@
+#!/bin/bash
+
+coffee --output lib --compile sources
+
+jade sources/ --out lib/

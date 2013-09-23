@@ -8,5 +8,6 @@
     "coffee-script": "*",
     "paper": "*",
     "zepto": "*",
-    "bacon": "*" }
+    "bacon": "*",
+    "fs": "*" }
 }
