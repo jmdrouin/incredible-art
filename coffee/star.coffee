@@ -5,45 +5,57 @@ CIRCONFERENCE = 2*Math.PI
 
 class window.Star
 
-    list: []
+    whiteList: []
+    blackList: []
 
-    dx: 0
-    dy: 0
-    x: 0
-    y: 0
+    p: [0, 0]
+    v: [0, 0]
     r: 10
+    m: 5
+    color: 'white'
 
     setCanvas: (canvas) ->
         Star::canvas = canvas
         Star::context = canvas.getContext('2d')
         console.log "canvas is set to", canvas
 
-    constructor: (params) ->
+    constructor: (params...) ->
         console.log "star created:", @
-        Star::list.push(@)
-        _.extend @, params
+        @set params...
 
-    set: (sth) ->
-        _.extend @, sth
+    white: ->
+        @whiteList.push star {color: 'white'}, arguments...
+    black: ->
+        @blackList.push star {color: 'green'}, arguments...
+
+    set: (sth...) ->
+        for x in sth
+            _.extend @, x
 
     draw: ->
         @context.beginPath()
-        @context.fillStyle = 'white'
-        @context.arc(@x, @y, @r, 0, CIRCONFERENCE)
+        @context.fillStyle = @color
+        [x, y] = @p
+        @context.arc x, y, @r, 0, CIRCONFERENCE
         @context.fill()
 
+    gravity: (other) ->
+        sd = @p.sqDist other.p
+        g = other.m / @m / sd
+        r = @p.diff(other.p).normalize().times g
+        r
+
     update: (dt) ->
-        @x += @dx * dt
-        @y += @dy * dt
+        if @color != 'green'
+            a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0]
+            @v = @v.add a.times dt
+            @p = @p.add @v.times dt
         @draw()
 
     updateAll: (dt) ->
         @context.clearRect 0, 0, @canvas.width, @canvas.height;
-        _.each @list, (s) -> s.update dt
-
-    drawAll: ->
-        @context.clearRect(0, 0, @canvas.width, @canvas.height);
-        _.each @list, (s)->s.draw()
+        _.each @blackList, (s) -> s.update dt
+        _.each @whiteList, (s) -> s.update dt
 
 window.star = factory Star
 
