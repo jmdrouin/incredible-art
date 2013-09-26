@@ -64,3 +64,7 @@ window.rnd = (low, high) ->
         high = low
         low = 0
     Math.random() * (high - low) + low
+
+window.rndv = (dim, low, high) ->
+    for x in [0..dim-1]
+        rnd low, high
