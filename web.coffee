@@ -12,6 +12,7 @@ app.get '/:script.coffee', (req, res) ->
     res.send coffee.compile(cs)
 
 app.use "/dependencies", express.static(__dirname + '/dependencies')
+app.use "/images", express.static(__dirname + '/images')
 
 app.get '/:demo.demo', (req, res) -> res.render('index.jade', demo: req.params.demo+'.coffee')
 app.get '/', (req, res) -> res.render('index.jade', demo: 'nothing.coffee')
