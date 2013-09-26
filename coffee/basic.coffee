@@ -1,16 +1,28 @@
 console.log "this the basic demo"
 
 window.demo = ->
+    pic =
+        [[0, 1, 0, 1, 0]
+        ,[1, 0, 1, 0, 1]
+        ,[1, 0, 0, 0, 1]
+        ,[0, 1, 0, 1, 0]
+        ,[0, 0, 1, 0, 0]]
 
-    Star::black
-        m: 10
-        p: [250, 250]
-        r: 10
+    for row, i in pic
+        for pixel, j in row
+            if pixel == 1
+                Star::black
+                    m: 5 + 20 * pixel
+                    p: [j*100+250, i*100+50]
+                    r: 5
+                    color: 'black' # if pixel == 0 then '#300' else '#f00'
 
-    _.each _.range(10), ->
-        s = 100
+    _.each _.range(100), ->
         Star::white
-            p: [ rnd(500), rnd(500) ]
-            m: s
+            p: [ rnd(Star::canvas.width), rnd(Star::canvas.height) ]
+            m: 5
+            r: 3
+            maxg: 0.005
+            v: [ rnd(-1/10, 1/10), rnd(-1/10, 1/10) ]
 
     starLoop ->

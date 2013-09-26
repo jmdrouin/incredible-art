@@ -12,6 +12,8 @@ class window.Star
     v: [0, 0]
     r: 10
     m: 5
+    maxg: 10
+    maxv: [10, 10]
     color: 'white'
 
     setCanvas: (canvas) ->
@@ -26,7 +28,7 @@ class window.Star
     white: ->
         @whiteList.push star {color: 'white'}, arguments...
     black: ->
-        @blackList.push star {color: 'green'}, arguments...
+        @blackList.push star {color: 'black', skip: true}, arguments...
 
     set: (sth...) ->
         for x in sth
@@ -42,11 +44,12 @@ class window.Star
     gravity: (other) ->
         sd = @p.sqDist other.p
         g = other.m / @m / sd
+        g = Math.min g, @maxg
         r = @p.diff(other.p).normalize().times g
         r
 
     update: (dt) ->
-        if @color != 'green'
+        if not @skip
             a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0]
             @v = @v.add a.times dt
             @p = @p.add @v.times dt
