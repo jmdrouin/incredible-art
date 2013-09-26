@@ -1,20 +1,19 @@
 
 console.log "star.coffee loaded"
 
-CIRCONFERENCE = 2*Math.PI
-
 class window.Star
 
     whiteList: []
     blackList: []
 
-    p: [0, 0]
-    v: [0, 0]
+    p: [0, 0, 0]
+    v: [0, 0, 0]
     r: 10
     m: 5
     maxg: 10
-    maxv: [10, 10]
     color: 'white'
+    zoom: 300
+    distance: 500
 
     setCanvas: (canvas) ->
         Star::canvas = canvas
@@ -26,9 +25,9 @@ class window.Star
         @set params...
 
     white: ->
-        @whiteList.push star {color: 'white'}, arguments...
+        @whiteList.push star {color: '255, 255, 255'}, arguments...
     black: ->
-        @blackList.push star {color: 'black', skip: true}, arguments...
+        @blackList.push star {color: '0, 0, 0', skip: true}, arguments...
 
     set: (sth...) ->
         for x in sth
@@ -36,10 +35,17 @@ class window.Star
 
     draw: ->
         @context.beginPath()
-        @context.fillStyle = @color
-        [x, y] = @p
-        @context.arc x, y, @r, 0, CIRCONFERENCE
-        @context.fill()
+        [x, y, z] = @p
+        z += @distance
+        if z > 0.00001
+            w = @canvas.width
+            h = @canvas.height
+            r = @r/z
+            alpha = 255
+            @context.fillStyle = "rgba(#{@color},#{alpha})"
+            r = Math.max(r, 1)
+            @context.arc @zoom*x/z+w/2, @zoom*y/z+h/2, r, 0, 2*Math.PI
+            @context.fill()
 
     gravity: (other) ->
         sd = @p.sqDist other.p
