@@ -24,5 +24,9 @@ window.demo = ->
             r: 3
             maxg: 0.005
             v: [ rnd(-1/10, 1/10), rnd(-1/10, 1/10) ]
+            step: (dt) ->
+                a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0]
+                @v = @v.add a.times dt
+                @p = @p.add @v.times dt
 
     starLoop ->

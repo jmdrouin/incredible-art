@@ -49,10 +49,7 @@ class window.Star
         r
 
     update: (dt) ->
-        if not @skip
-            a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0]
-            @v = @v.add a.times dt
-            @p = @p.add @v.times dt
+        @step?(dt)
         @draw()
 
     updateAll: (dt) ->
