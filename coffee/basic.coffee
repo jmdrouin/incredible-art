@@ -7,6 +7,6 @@ rnd = (low, high) ->
     Math.random() * (high - low) + low
 
 _.each _.range(10), ->
-  Star.create({x:rnd(500), y:rnd(500), r:rnd(30)})
+  star {x: rnd(500), y:rnd(500), r:rnd(30)}
 
-window.demo = -> Star.drawAll()
+window.demo = -> Star::drawAll()

@@ -3,26 +3,28 @@ console.log "star.coffee loaded"
 
 CIRCONFERENCE = 2*Math.PI
 
-Star = window.Star =
-  list:[]
+class window.Star
 
-  setCanvas: (canvas) ->
-    Star.canvas = canvas
-    Star.context = canvas.getContext('2d')
-    console.log "canvas is set to", canvas
+    list: []
 
-  create: (params) ->
-    that = _.extend Object.create(Star), params
-    console.log "star created:", that
-    Star.list.push(that)
-    return that
+    setCanvas: (canvas) ->
+        Star::canvas = canvas
+        Star::context = canvas.getContext('2d')
+        console.log "canvas is set to", canvas
 
-  draw: ->
-    this.context.beginPath()
-    this.context.fillStyle = 'white'
-    this.context.arc(this.x, this.y, this.r, 0, CIRCONFERENCE)
-    this.context.fill()
+    constructor: (params) ->
+        console.log "star created:", @
+        Star::list.push(@)
+        _.extend @, params
 
-  drawAll: ->
-    this.context.clearRect(0, 0, Star.canvas.width, Star.canvas.height);
-    _.each this.list, (s)->s.draw()
+    draw: ->
+        @context.beginPath()
+        @context.fillStyle = 'white'
+        @context.arc(@x, @y, @r, 0, CIRCONFERENCE)
+        @context.fill()
+
+    drawAll: ->
+        @context.clearRect(0, 0, @canvas.width, @canvas.height);
+        _.each @list, (s)->s.draw()
+
+window.star = factory Star
