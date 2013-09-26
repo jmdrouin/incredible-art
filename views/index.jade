@@ -17,9 +17,8 @@ html(lang='en')
     style.
       body {background-color:black}
       .layer {border:1px solid #333}
-      #nosecret {visibility:hidden}
 
   body(onLoad="Star.prototype.setCanvas($('.layer')[0]);demo()")
     .container
       canvas.layer(width="1000", height="500")
-      canvas#secret(width="500", height="500")
+      canvas#secret(width="1000", height="500")

@@ -10,9 +10,9 @@ window.loadImage = (url, callback) ->
     imageObj.onload = ->
         context.drawImage(this, 0, 0)
         imageData = context.getImageData(0,0,canvas.height,canvas.width)
-        pixels = _.map _.range(canvas.height), (x) ->
-            _.map _.range(canvas.width), (y) ->
-                imageData.data[4*(x+y*canvas.width)]/255
+        pixels = _.map _.range(canvas.width), (x) ->
+            _.map _.range(canvas.height), (y) ->
+                imageData.data[4*(x+y*canvas.height)]/255
         callback(pixels)
 
     imageObj.src = url
