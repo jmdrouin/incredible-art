@@ -2,12 +2,13 @@
   "name": "incredible-art",
   "version": "0.0.1",
   "dependencies": {
+    "express": "*",
     "jade": "*",
     "underscore": "*",
     "less": "*",
     "coffee-script": "*",
     "paper": "*",
     "zepto": "*",
-    "bacon": "*",
-    "fs": "*" }
-}
+    "bacon": "*"},
+  "engines": {
+    "node":"*" }}

@@ -4,11 +4,12 @@ html(lang='en')
     meta(charset='utf-8')
     title Incredible Art
 
-    link(href='dependencies/style.css', rel='stylesheet')
     script(src='dependencies/zepto.js', type='text/javascript')
-    script(src='dependencies/less.js', type='text/javascript')
+    script(src='dependencies/underscore-min.js', type='text/javascript')
+    script(src='main.coffee', type='text/javascript')
 
-    script(src='lib/main.js', type='text/javascript')
+    style.
+      body {background-color:black}
 
   body(onload="(window.onLoad||function(){console.warn('no onWindowLoad function')})()")
     .container
