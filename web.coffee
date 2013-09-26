@@ -13,6 +13,7 @@ app.get '/:script.coffee', (req, res) ->
 
 app.use "/dependencies", express.static(__dirname + '/dependencies')
 
-app.get '/', (req, res) -> res.render('index.jade')
+app.get '/:demo.demo', (req, res) -> res.render('index.jade', demo: req.params.demo+'.coffee')
+app.get '/', (req, res) -> res.render('index.jade', demo: 'nothing.coffee')
 
 app.listen PORT, -> console.log("Listening on port " + PORT)

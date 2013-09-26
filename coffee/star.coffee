@@ -1,11 +1,15 @@
 
+console.log "star.coffee loaded"
+
 CIRCONFERENCE = 2*Math.PI
 
 Star = window.Star =
   list:[]
 
   setCanvas: (canvas) ->
+    Star.canvas = canvas
     Star.context = canvas.getContext('2d')
+    console.log "canvas is set to", canvas
 
   create: (params) ->
     that = _.extend Object.create(Star), params
@@ -20,4 +24,5 @@ Star = window.Star =
     this.context.fill()
 
   drawAll: ->
+    this.context.clearRect(0, 0, Star.canvas.width, Star.canvas.height);
     _.each this.list, (s)->s.draw()
