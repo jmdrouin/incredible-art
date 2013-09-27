@@ -8,7 +8,7 @@ window.connectMidi = (device, midiMap) ->
     onMIDIMessage = (ev) ->
         dispatch = [ev.data[0], ev.data[1]]
         if dispatch of midiMap
-            midiMap[dispatch]()
+            midiMap[dispatch](ev.data[2])
         else
             console.log "UNKNOWN MESSAGE: ", dispatch
 

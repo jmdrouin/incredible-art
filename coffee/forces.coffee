@@ -53,3 +53,15 @@ Star::applyHorizontalPull = (dt) ->
 Star::applyVerticalPull = (dt, w) ->
     w = @factors.verticalPull
     if @p[1] < 0 then @v[1]+=w*dt*0.001 else @v[1]-=w*dt*0.001
+
+Star::applyRespawn = (dt, w) ->
+    if @p.dist([0, 0, 0]) > @w * 2
+        p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
+        @set
+                    curve: rnd(0.005)
+                    p: p
+                    m: 20
+                    r: 4
+                    displayRadius: 0.0001
+                    maxg: 0.005
+                    v: p.neg().normalize().times(4)

@@ -2,7 +2,7 @@ console.log "this the basic demo"
 
 window.demo = ->
     loadImage '/images/cells.png', (pixels) ->
-
+        Star::pixels = pixels
         NUMSTARS = 20
         SPACING = 4
         WHITE = 0.1
@@ -31,8 +31,7 @@ window.demo = ->
                             @p[1] >= Star::canvas.height
                         intensity = 0
                     else
-                        i = Math.floor(@p[0]/2+Star::canvas.width/2)
-                        j = Math.floor(@p[1]/2+Star::canvas.height/2)
+                        [i, j] = @pixelPosition(@pixels.length, @pixels[0].length)
                         intensity = pixels[i][j]
                     @t += dt*(intensity+WHITE)*SPEED
                     @p = [initial[0] + spacing[0]*Math.sin phase[0] + @t
