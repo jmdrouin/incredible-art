@@ -9,46 +9,51 @@ Star::pixelPosition = (W,H) ->
     j = @p[1] / 2 + Star::canvas.height / 2
     [Math.floor(W*i/@w), Math.floor(H*j/@h)]
 
-Star::applyRotation = (dt) ->
-    s = Math.sin(dt * @curve)
-    c = Math.cos(dt * @curve)
+Star::applyRotation = (dt, w) ->
+    s = Math.sin(dt * w * @curve)
+    c = Math.cos(dt * w * @curve)
     @v = [c*@v[0]-s*@v[1], s*@v[0]+c*@v[1], 0]
 
-Star::applyIntensityFromVideo = (dt) ->
+Star::applyIntensityFromVideo = (dt, w) ->
     if @isOutOfCanvas()
-        @intensity *= 50
+        @intensity *= w * 50
     else
         px = @pixelPosition(@video.width, @video.height)
-        @intensity *= 10 * @video.pixels[px[0]][px[1]]
+        @intensity *= 0.1 * w * @video.pixels[px[0]][px[1]]
 
-Star::applyIntensityRadius = (dt) ->
-    t = 0.5
-    @r = t*@r + (1-t)*Math.min(10/@intensity,10)
+Star::applyIntensityRadius = (dt, w) ->
+    @r = (1-w)*@r + w*Math.min(0.1/@intensity,10)
 
-Star::applyMovement = (dt) ->
-    @p = @p.add(@v.times(@intensity))
+Star::applyMovement = (dt, w) ->
+    @p = @p.add(@v.times(@intensity*dt))
+
+Star::setUpdateFunctions = (functions...) ->
+    window.stepsVector = _.map _.range(functions.length), ->1
+    @step = (dt) ->
+        @intensity = 1
+        that = this
+        _.each functions, (f,i)->
+            f.call(that,dt,window.stepsVector[i])
 
 window.demo = ->
     activateVideo (vid) ->
         Star::video = vid
-        vibrateFromVideo = (dt) ->
-            @intensity = 1
-            @applyIntensityFromVideo(dt)
-            @applyIntensityRadius(dt)
-            @applyRotation(dt)
-            @applyMovement(dt)
+
+        Star::setUpdateFunctions(Star::applyIntensityFromVideo,
+                                 Star::applyIntensityRadius,
+                                 Star::applyRotation,
+                                 Star::applyMovement)
 
         SPEED = 2
-        _.each _.range(2000), ->
+        _.each _.range(1000), ->
             p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
-            Star::white
-                curve: rnd(0.005)
-                p: p
-                m: 20
-                r: 4
-                maxg: 0.005
-                v: p.neg().normalize().times(SPEED)
-                step: vibrateFromVideo
+            thestar = Star::white
+                    curve: rnd(0.005)
+                    p: p
+                    m: 20
+                    r: 4
+                    maxg: 0.005
+                    v: p.neg().normalize().times(SPEED)
 
         starLoop ->
             window.P = vid.update()
