@@ -19,6 +19,7 @@ window.demo = ->
                     p: p
                     m: 20
                     r: 4
+                    red: 0.2*Math.random()
                     displayRadius: 4
                     maxg: 0.005
                     v: p.neg().normalize().times(SPEED)

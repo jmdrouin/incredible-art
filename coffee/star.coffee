@@ -15,8 +15,8 @@ class window.Star
     zoom: 300
     distance: 400
     useImage: no
-    debug3d: true
     displayRadius: null
+    red: 0
 
     setCanvas: (canvas) ->
         Star::canvas = canvas
@@ -36,30 +36,22 @@ class window.Star
         for x in sth
             _.extend @, x
 
-    project: ([x, y, z]) ->
-        z += @distance
-        x = @zoom*x/z + @w/2 + @factors.movex
-        y = @zoom*y/z + @h/2 + @factors.movey
-        r = @r/z * @factors.size
-        [x, y, r]
-
-
-    invProject: ([x, y, r]) ->
-        z = @r / (r - @distance) * @factors.size
-        x = (x - @factors.movex - @w/2) * z / @zoom
-        y = (y - @factors.movey - @h/2) * z / @zoom
-        [x, y, z]
-
     draw: ->
-        projected = @project @p
-        if @p[2] + @distance > 0.000001
-            [x, y, r] = projected
-            r = @displayRadius or r
+        [x, y, z] = @p
+        z += @distance
+        if z > 0.00001
+            cx = @zoom*x/z+@w/2 + (@factors.movex-0.5)*300
+            cy = @zoom*y/z+@h/2 + (@factors.movey-0.5)*300
+            r = (@displayRadius or @r/z) * @factors.size
+
             if @useImage
-                @context.drawImage(@starImage, x-2*r, y-2*r, 4*r, 4*r)
+                @context.globalAlpha = @factors.opacity
+                @context.drawImage(@starImage,cx-2*r,cy-2*r,4*r,4*r)
+                @context.globalAlpha *= @red
+                @context.drawImage(@redImage,cx-2*r,cy-2*r,4*r,4*r)
             else
                 @context.beginPath()
-                @context.arc x, y, r, 0, 2*Math.PI
+                @context.arc cx, cy, r, 0, 2*Math.PI
                 @context.fill()
 
     gravity: (other) ->
@@ -73,40 +65,23 @@ class window.Star
         @draw()
 
     updateAll: (dt) ->
-        @context.globalAlpha = @factors.opacity
-        @context.clearRect 0, 0, @canvas.width, @canvas.height
-
-        if @debug3d
-            line = ([px0, py0], [px1, py1]) =>
-                @context.beginPath()
-                @context.moveTo px0, py0
-                @context.lineTo px1, py1
-                @context.strokeStyle = '#f00'
-                @context.lineWidth = 1
-                @context.stroke()
-            line @project([-200, -200, 200]), @project([-200, -200, -200])
-            line @project([200, -200, 200]), @project([200, -200, -200])
-            line @project([-200, 200, 200]), @project([-200, 200, -200])
-            line @project([200, 200, 200]), @project([200, 200, -200])
-            line @project([-200, 0, 0]), @project([200, 0, 0])
-            line @project([0, -200, 0]), @project([0, 200, 0])
-
-        # _.each @blackList, (s) -> s.draw()
+        @context.clearRect 0, 0, @canvas.width, @canvas.height;
+        #_.each @blackList, (s) -> s.draw()
         @context.fillStyle = "rgba(#{@whiteList[0].color},255)"
         _.each @whiteList, (s) -> s.update dt
 
+
     isOutOfCanvas: ->
-        [x, y] = @p
-        x < -Star::canvas.width or
-            y < -Star::canvas.height or
-            x >= Star::canvas.width or
-            y >= Star::canvas.height
+        @p[0] < -Star::canvas.width or
+         @p[1] < -Star::canvas.height or
+         @p[0] >= Star::canvas.width or
+         @p[1] >= Star::canvas.height
 
     pixelPosition: (W,H) ->
-        [x, y] = @p
-        i = x / 2 + Star::canvas.width / 2
-        j = y / 2 + Star::canvas.height / 2
+        i = @p[0] / 2 + Star::canvas.width / 2
+        j = @p[1] / 2 + Star::canvas.height / 2
         [Math.floor(W*i/@w), Math.floor(H*j/@h)]
+
 
     setUpdateFunctions: (functions...) ->
         window.stepsVector = _.map _.range(functions.length), ->1

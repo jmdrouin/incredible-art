@@ -1,4 +1,3 @@
-
 Star::factors =
     rotation:1
     radius:1
@@ -9,8 +8,8 @@ Star::factors =
     horizontalPull:1
     verticalPull:1
     size:1
-    movex:0
-    movey:0
+    movex:0.5
+    movey:0.5
     opacity:0.5
 
 Star::applyRotation = (dt) ->
