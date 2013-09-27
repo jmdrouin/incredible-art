@@ -18,7 +18,7 @@ window.activateVideo = (callback) ->
                 this.pixels = _.map _.range(video.width), (x) ->
                     _.map _.range(video.height), (y) ->
                         k = 4*(x+y*video.height)
-                        (imageData.data[k] + imageData.data[k+1] + imageData.data[k+2])/(3*255)
+                        Math.min(imageData.data[k], imageData.data[k+1], imageData.data[k+2])/255
 
         callback(videoObject)
 

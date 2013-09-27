@@ -9,6 +9,8 @@ window.demo = ->
     loadImage '/images/cells.png', (pixels) ->
         Star::useImage = yes
 
+        console.log "PIX", pixels
+
         _.each _.range(2000), ->
             Star::white
                 curve: rnd(-0.002,0.002)
@@ -16,7 +18,7 @@ window.demo = ->
                 m: 20
                 r: 2
                 maxg: 0.005
-                v: [ 0.6*rnd(-1, 1), 0.6*rnd(-1, 1), 0 ]
+                v: [ 2*rnd(-1, 1), 2*rnd(-1, 1), 0 ]
                 step: (dt) ->
 
                     if @p[0] < -Star::canvas.width or
@@ -25,8 +27,12 @@ window.demo = ->
                             @p[1] >= Star::canvas.height
                         intensity = 50
                     else
-                        i = Math.floor(@p[0]/2+Star::canvas.width/2)
-                        j = Math.floor(@p[1]/2+Star::canvas.height/2)
+                        i = (@p[0]/2+Star::canvas.width/2)
+                        j = (@p[1]/2+Star::canvas.height/2)
+
+                        i = Math.floor(pixels.length * i / Star::canvas.width)
+                        j = Math.floor(pixels[0].length * j / Star::canvas.height)
+
                         intensity = pixels[i][j] + 0.1
 
                     @v = rotate(@v,@curve * dt)

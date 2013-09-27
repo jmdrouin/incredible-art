@@ -21,10 +21,8 @@ class window.Star
         Star::context = canvas.getContext('2d')
         Star::w = canvas.width
         Star::h = canvas.height
-        console.log "canvas is set to", canvas
 
     constructor: (params...) ->
-        console.log "star created:", @
         @set params...
 
     white: ->
@@ -47,7 +45,7 @@ class window.Star
                 cx = @zoom*x/z+@w/2
                 cy = @zoom*y/z+@h/2
                 r = Math.max(1, @r/z)
-                @context.arc @zoom*x/z+@w/2, @zoom*y/z+@h/2, r, 0, 2*Math.PI
+                @context.arc @zoom*x/z+@w/2, @zoom*y/z+@h/2, @r, 0, 2*Math.PI
                 @context.fill()
 
     drawWithImage: ->
@@ -75,7 +73,7 @@ class window.Star
 
 window.star = factory Star
 
-window.starLoop = (looper, dt=10) ->
+window.starLoop = (looper, dt=50) ->
     updateStars = (dt) ->
         looper()
         Star::updateAll dt

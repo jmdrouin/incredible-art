@@ -7,17 +7,21 @@ rotate = (p,angle) ->
 
 window.demo = ->
     activateVideo (vid) ->
-        Star::useImage = yes
+        #Star::useImage = yes
+        SPEED = 2
         _.each _.range(2000), ->
+            p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
             Star::white
-                curve: 0.001
-                p: [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
+                curve: rnd(0.005)
+                p: p
                 m: 20
-                r: 3
+                r: 4
                 maxg: 0.005
-                v: [ 5*rnd(-1, 1), 5*rnd(-1, 1), 0 ]
+                v: p.neg().normalize().times(SPEED)
                 step: (dt) ->
                     pixels=vid.pixels
+
+
                     if @p[0] < -Star::canvas.width or
                             @p[1] < -Star::canvas.height or
                             @p[0] >= Star::canvas.width or
@@ -31,9 +35,10 @@ window.demo = ->
                         j = Math.floor(vid.height*j/Star::canvas.height)
                         intensity = pixels[i][j]
 
-
+                    t=0.5
+                    @r = t*@r+(1-t)*Math.min(1/intensity,10)
                     @v = rotate(@v,@curve * dt)
-                    @p = @p.add(@v.times(dt*intensity))
+                    @p = @p.add(@v.times(10*intensity+2))
 
         starLoop ->
             window.P = vid.update()
