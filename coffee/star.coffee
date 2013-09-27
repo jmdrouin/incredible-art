@@ -71,6 +71,28 @@ class window.Star
         @context.fillStyle = "rgba(#{@whiteList[0].color},255)"
         _.each @whiteList, (s) -> s.update dt
 
+
+    isOutOfCanvas: ->
+        @p[0] < -Star::canvas.width or
+         @p[1] < -Star::canvas.height or
+         @p[0] >= Star::canvas.width or
+         @p[1] >= Star::canvas.height
+
+    pixelPosition: (W,H) ->
+        i = @p[0] / 2 + Star::canvas.width / 2
+        j = @p[1] / 2 + Star::canvas.height / 2
+        [Math.floor(W*i/@w), Math.floor(H*j/@h)]
+
+
+    setUpdateFunctions: (functions...) ->
+        window.stepsVector = _.map _.range(functions.length), ->1
+        @step = (dt) ->
+            @intensity = 1
+            that = this
+            _.each functions, (f,i)->
+                f.call(that,dt,window.stepsVector[i])
+
+
 window.star = factory Star
 
 window.starLoop = (looper, dt=50) ->
