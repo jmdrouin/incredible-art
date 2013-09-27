@@ -1,13 +1,43 @@
-console.log "this the basic demo"
+Star::isOutOfCanvas = ->
+    @p[0] < -Star::canvas.width or
+     @p[1] < -Star::canvas.height or
+     @p[0] >= Star::canvas.width or
+     @p[1] >= Star::canvas.height
 
-rotate = (p,angle) ->
-    s = Math.sin(angle)
-    c = Math.cos(angle)
-    [c*p[0]-s*p[1], s*p[0]+c*p[1], 0]
+Star::pixelPosition = (W,H) ->
+    i = @p[0] / 2 + Star::canvas.width / 2
+    j = @p[1] / 2 + Star::canvas.height / 2
+    [Math.floor(W*i/@w), Math.floor(H*j/@h)]
+
+Star::applyRotation = (dt) ->
+    s = Math.sin(dt * @curve)
+    c = Math.cos(dt * @curve)
+    @v = [c*@v[0]-s*@v[1], s*@v[0]+c*@v[1], 0]
+
+Star::applyIntensityFromVideo = (dt) ->
+    if @isOutOfCanvas()
+        @intensity *= 50
+    else
+        px = @pixelPosition(@video.width, @video.height)
+        @intensity *= 10 * @video.pixels[px[0]][px[1]]
+
+Star::applyIntensityRadius = (dt) ->
+    t = 0.5
+    @r = t*@r + (1-t)*Math.min(10/@intensity,10)
+
+Star::applyMovement = (dt) ->
+    @p = @p.add(@v.times(@intensity))
 
 window.demo = ->
     activateVideo (vid) ->
-        #Star::useImage = yes
+        Star::video = vid
+        vibrateFromVideo = (dt) ->
+            @intensity = 1
+            @applyIntensityFromVideo(dt)
+            @applyIntensityRadius(dt)
+            @applyRotation(dt)
+            @applyMovement(dt)
+
         SPEED = 2
         _.each _.range(2000), ->
             p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
@@ -18,27 +48,7 @@ window.demo = ->
                 r: 4
                 maxg: 0.005
                 v: p.neg().normalize().times(SPEED)
-                step: (dt) ->
-                    pixels=vid.pixels
-
-
-                    if @p[0] < -Star::canvas.width or
-                            @p[1] < -Star::canvas.height or
-                            @p[0] >= Star::canvas.width or
-                            @p[1] >= Star::canvas.height
-                        intensity = 50
-                    else
-                        i = @p[0]/2 + Star::canvas.width/2
-                        j = @p[1]/2 + Star::canvas.height/2
-
-                        i = Math.floor(vid.width*i/Star::canvas.width)
-                        j = Math.floor(vid.height*j/Star::canvas.height)
-                        intensity = pixels[i][j]
-
-                    t=0.5
-                    @r = t*@r+(1-t)*Math.min(1/intensity,10)
-                    @v = rotate(@v,@curve * dt)
-                    @p = @p.add(@v.times(10*intensity+2))
+                step: vibrateFromVideo
 
         starLoop ->
             window.P = vid.update()
