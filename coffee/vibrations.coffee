@@ -7,35 +7,22 @@ rotate = (p,angle) ->
 
 window.demo = ->
     loadImage '/images/cells.png', (pixels) ->
-        Star::useImage = yes
+        Star::useImage = no
+        Star::pixels = pixels
 
-        console.log "PIX", pixels
+        Star::setUpdateFunctions(Star::applyIntensityFromImage,
+                                 Star::applyIntensityRadius,
+                                 Star::applyRotation,
+                                 Star::applyMovement)
 
-        _.each _.range(2000), ->
+        _.each _.range(3000), ->
             Star::white
                 curve: rnd(-0.002,0.002)
                 p: [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
                 m: 20
                 r: 2
+                displayRadius: 4
                 maxg: 0.005
                 v: [ 2*rnd(-1, 1), 2*rnd(-1, 1), 0 ]
-                step: (dt) ->
-
-                    if @p[0] < -Star::canvas.width or
-                            @p[1] < -Star::canvas.height or
-                            @p[0] >= Star::canvas.width or
-                            @p[1] >= Star::canvas.height
-                        intensity = 50
-                    else
-                        i = (@p[0]/2+Star::canvas.width/2)
-                        j = (@p[1]/2+Star::canvas.height/2)
-
-                        i = Math.floor(pixels.length * i / Star::canvas.width)
-                        j = Math.floor(pixels[0].length * j / Star::canvas.height)
-
-                        intensity = pixels[i][j] + 0.1
-
-                    @v = rotate(@v,@curve * dt)
-                    @p = @p.add(@v.times(dt*intensity))
 
         starLoop ->

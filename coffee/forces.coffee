@@ -5,7 +5,7 @@ Star::applyRotation = (dt, w) ->
 
 Star::applyIntensityFromVideo = (dt, w) ->
     if @isOutOfCanvas()
-        @intensity *= w * 50
+        @intensity = w * 50
     else
         px = @pixelPosition(@video.width, @video.height)
         @intensity *= 0.1 * w * @video.pixels[px[0]][px[1]]
@@ -19,3 +19,10 @@ Star::applyGravity = (dt, w) ->
 
 Star::applyMovement = (dt, w) ->
     @p = @p.add(@v.times(@intensity*dt))
+
+Star::applyIntensityFromImage = (dt, w) ->
+    if @isOutOfCanvas()
+        @intensity = w * 50
+    else
+        px = @pixelPosition(@pixels.length, @pixels[0].length)
+        @intensity *= 0.1 * w * (@pixels[px[0]][px[1]] + 0.1)
