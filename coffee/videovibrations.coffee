@@ -11,7 +11,7 @@ window.demo = ->
                                  Star::applyMovement)
 
         SPEED = 4
-        _.each _.range(1500), ->
+        _.each _.range(1000), ->
             p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
             thestar = Star::white
                     curve: rnd(0.005)

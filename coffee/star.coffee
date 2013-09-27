@@ -39,9 +39,9 @@ class window.Star
         [x, y, z] = @p
         z += @distance
         if z > 0.00001
-            cx = @zoom*x/z+@w/2
-            cy = @zoom*y/z+@h/2
-            r = @displayRadius or @r/z
+            cx = @zoom*x/z+@w/2 + @factors.movex
+            cy = @zoom*y/z+@h/2 + @factors.movey
+            r = (@displayRadius or @r/z) * @factors.size
 
             if @useImage
                 @context.drawImage(@starImage,cx-2*r,cy-2*r,4*r,4*r)
@@ -61,7 +61,8 @@ class window.Star
         @draw()
 
     updateAll: (dt) ->
-        @context.globalAlpha = 0.3
+        @context.globalAlpha = @factors.opacity
+
         @context.clearRect 0, 0, @canvas.width, @canvas.height;
         #_.each @blackList, (s) -> s.draw()
         @context.fillStyle = "rgba(#{@whiteList[0].color},255)"
@@ -91,7 +92,7 @@ class window.Star
 
 window.star = factory Star
 
-window.starLoop = (looper, dt=50) ->
+window.starLoop = (looper, dt=25) ->
     updateStars = (dt) ->
         looper()
         Star::updateAll dt

@@ -22,6 +22,10 @@ html(lang='en')
       body {background-color:black;overflow:hidden}
       .layer {border:0;margin:0;padding:0}
       .container {position:absolute;left:0;top:0;bottom:0;right:0}
+      #frame {position:absolute;left:0;top:0;bottom:0;right:0;z-index:10;
+              background-image:url('/images/circle.png');
+              background-size:100% auto;
+              background-repeat:no-repeat}
       video {border:1px solid red}
 
     script.
@@ -40,6 +44,7 @@ html(lang='en')
   body(onLoad="loadStarImage(init)", onresize="resize()")
     .container
       canvas.layer(width="1000", height="1000")
+      div#frame
       canvas#secret(width="1000", height="500")
       video#video(width="320", height="240")
       canvas#videodump(width="320", height="240")
