@@ -6,25 +6,48 @@ window.demo = ->
         Star::video = vid
         Star::videoIntensity = 0
         Star::imageIntensity = 1
-        Star::setUpdateFunctions(Star::applyIntensityFromVideo,
-                                 Star::applyIntensityFromImage,
-                                 Star::applyIntensityRadius,
-                                 Star::applyRotation,
-                                 Star::applyMovement,
-                                 Star::applyRespawn)
 
-        SPEED = 6
-        _.each _.range(1000), ->
-            p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
+        window.setVibrationMode = setVibrationMode = ->
+            Star::setUpdateFunctions \
+                Star::applyIntensityFromVideo,
+                Star::applyIntensityFromImage,
+                Star::applyIntensityRadius,
+                Star::applyRotation,
+                Star::applyMovement,
+                Star::applyRespawn
+
+        window.setGravityMode = setGravityMode = ->
+            Star::setUpdateFunctions \
+                Star::applyIntensityFromVideo,
+                Star::applyIntensityFromImage,
+                Star::applyIntensityRadius,
+                Star::applyGravity,
+                Star::applyMovement2,
+                Star::applyRespawn2
+
+        setVibrationMode()
+
+        SPEED = 0.1
+
+        Star::black
+            m: 25
+            p: [0,0,0]
+            step: ->
+
+        _.each _.range(500), (i) ->
+            p = [ Star::canvas.width*rnd(-1,1),
+                  Star::canvas.height*rnd(-1,1), 0]
             thestar = Star::white
                     curve: rnd(0.005)
                     p: p
-                    m: 20
+                    m: rnd(8,12)
                     r: 4
                     red: 0.2*Math.random()
                     displayRadius: 4
-                    maxg: 0.005
-                    v: p.neg().normalize().times(SPEED)
+                    maxg: 0.001
+                    gravityFilter: 3
+                    gravityHack: i % 3
+                    v: [rnd(-SPEED,SPEED), rnd(-SPEED,SPEED), 0]
 
         midiMap = {}
         V = _.map [0..15], ->1
@@ -43,8 +66,16 @@ window.demo = ->
             Star::factors.movex = 100*(V[5]-V[6]+V[7])-50
             Star::factors.movex = 100*(V[6]+V[7]-V[8])-50
 
+        midiMap2 = {}
+        midiMap2[[176, 21]] = (v) ->
+            if v > 64
+                console.log "vibration mode!!!"
+                setVibrationMode()
+            else
+                console.log "gravity mode!!!"
+                setGravityMode()
 
-        connectMidi 'Launch Control', midiMap
+        connectMidi 'Launch Control', midiMap2
 
         starLoop ->
             window.P = vid.update()

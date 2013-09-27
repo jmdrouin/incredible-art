@@ -33,12 +33,20 @@ Star::applyIntensityRadius = (dt) ->
 
 
 Star::applyGravity = (dt) ->
-    a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0, 0]
-    @v = @v.add a.times(dt*@factors.gravity)
+    @gravityDt += dt
+    @gravityHack = (@gravityHack + 1) % @gravityFilter
+    if @gravityHack == 0
+        dt = @gravityDt
+        a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0, 0]
+        @v = @v.add a.times(dt*@factors.gravity)
+        @gravityDt = 0
 
 Star::applyMovement = (dt) ->
     v = @v.add([@factors.extradx,@factors.extrady,0])
     @p = @p.add(v.times((@intensity||1)*dt*@factors.movement))
+
+Star::applyMovement2 = (dt) ->
+    @p = @p.add(@v.times(dt))
 
 Star::applyIntensityFromImage = (dt) ->
     if @isOutOfCanvas()
@@ -66,3 +74,17 @@ Star::applyRespawn = (dt, w) ->
                     displayRadius: 0.0001
                     maxg: 0.005
                     v: p.neg().normalize().times(6)
+
+SPEED = 0.1
+
+Star::applyRespawn2 = (dt, w) ->
+    if @p.dist([0, 0, 0]) > @w * 2
+        p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
+        @set
+                    curve: rnd(0.005)
+                    p: p
+                    m: 20
+                    r: 4
+                    displayRadius: 0.0001
+                    maxg: 0.005
+                    v: [rnd(-SPEED,SPEED), rnd(-SPEED,SPEED), 0]

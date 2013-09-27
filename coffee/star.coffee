@@ -18,6 +18,8 @@ class window.Star
     displayRadius: null
     red: 0
 
+    gravityDt: 0
+
     setCanvas: (canvas) ->
         Star::canvas = canvas
         Star::context = canvas.getContext('2d')
@@ -84,17 +86,16 @@ class window.Star
 
 
     setUpdateFunctions: (functions...) ->
-        window.stepsVector = _.map _.range(functions.length), ->1
         @step = (dt) ->
             @intensity = null
             that = this
-            _.each functions, (f,i)->
-                f.call(that,dt,window.stepsVector[i])
+            _.each functions, (f, i) ->
+                f.call(that, dt)
 
 
 window.star = factory Star
 
-window.starLoop = (looper, dt=20) ->
+window.starLoop = (looper, dt=40) ->
     updateStars = (dt) ->
         looper()
         Star::updateAll dt
