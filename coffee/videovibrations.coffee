@@ -1,13 +1,14 @@
 
 window.demo = ->
     activateVideo (vid) ->
+        Star::useImage = yes
         Star::video = vid
         Star::setUpdateFunctions(Star::applyIntensityFromVideo,
                                  Star::applyIntensityRadius,
                                  Star::applyRotation,
                                  Star::applyMovement)
 
-        SPEED = 2
+        SPEED = 4
         _.each _.range(1000), ->
             p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
             thestar = Star::white

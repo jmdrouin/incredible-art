@@ -36,25 +36,19 @@ class window.Star
             _.extend @, x
 
     draw: ->
-        if @useImage
-            @drawWithImage()
-        else
-            [x, y, z] = @p
-            z += @distance
-            if z > 0.00001
-                @context.beginPath()
-                cx = @zoom*x/z+@w/2
-                cy = @zoom*y/z+@h/2
-                r = @displayRadius or @r/z
-                @context.arc @zoom*x/z+@w/2, @zoom*y/z+@h/2, r, 0, 2*Math.PI
-                @context.fill()
-
-    drawWithImage: ->
         [x, y, z] = @p
-        z+=@distance
-        cx = @zoom*x/z + @w/2
-        cy = @zoom*y/z + @h/2
-        @context.drawImage(@starImage,cx,cy)
+        z += @distance
+        if z > 0.00001
+            cx = @zoom*x/z+@w/2
+            cy = @zoom*y/z+@h/2
+            r = @displayRadius or @r/z
+
+            if @useImage
+                @context.drawImage(@starImage,cx-2*r,cy-2*r,4*r,4*r)
+            else
+                @context.beginPath()
+                @context.arc cx, cy, r, 0, 2*Math.PI
+                @context.fill()
 
     gravity: (other) ->
         sd = @p.sqDist other.p
