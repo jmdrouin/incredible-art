@@ -1,16 +1,18 @@
 Star::factors =
     rotation:1
     radius:1
-    videoIntensity:1
-    imageIntensity:1
+    videoIntensity:0
+    imageIntensity:0.5
     gravity:1
     movement:1
     horizontalPull:1
     verticalPull:1
-    size:1
+    size:1.7
     movex:0.5
     movey:0.5
-    opacity:0.5
+    extradx:0
+    extrady:0
+    opacity:0.3
 
 Star::applyRotation = (dt) ->
     s = Math.sin(dt * @factors.rotation * @curve)
@@ -35,7 +37,8 @@ Star::applyGravity = (dt) ->
     @v = @v.add a.times(dt*@factors.gravity)
 
 Star::applyMovement = (dt) ->
-    @p = @p.add(@v.times((@intensity||1)*dt*@factors.movement))
+    v = @v.add([@factors.extradx,@factors.extrady,0])
+    @p = @p.add(v.times((@intensity||1)*dt*@factors.movement))
 
 Star::applyIntensityFromImage = (dt) ->
     if @isOutOfCanvas()
@@ -62,4 +65,4 @@ Star::applyRespawn = (dt, w) ->
                     r: 4
                     displayRadius: 0.0001
                     maxg: 0.005
-                    v: p.neg().normalize().times(4)
+                    v: p.neg().normalize().times(6)

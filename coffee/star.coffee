@@ -94,7 +94,7 @@ class window.Star
 
 window.star = factory Star
 
-window.starLoop = (looper, dt=25) ->
+window.starLoop = (looper, dt=20) ->
     updateStars = (dt) ->
         looper()
         Star::updateAll dt

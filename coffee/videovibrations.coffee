@@ -1,17 +1,19 @@
 
 window.demo = ->
-    activateVideo (vid) ->
+    activateVideo (vid) -> loadImage '/images/eye2.png', (pixels)->
+        Star::pixels = pixels
         Star::useImage = yes
         Star::video = vid
+        Star::videoIntensity = 0
+        Star::imageIntensity = 1
         Star::setUpdateFunctions(Star::applyIntensityFromVideo,
+                                 Star::applyIntensityFromImage,
                                  Star::applyIntensityRadius,
-                                 Star::applyHorizontalPull,
-                                 Star::applyVerticalPull,
                                  Star::applyRotation,
                                  Star::applyMovement,
                                  Star::applyRespawn)
 
-        SPEED = 4
+        SPEED = 6
         _.each _.range(1000), ->
             p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
             thestar = Star::white

@@ -37,6 +37,6 @@ window.connectMidi = (device, midiMap) ->
         console.log "FOUND DEVICE", input, output
         input.onmidimessage = onMIDIMessage
 
-    navigator
-        .requestMIDIAccess()
-        .then onMIDISuccess, onMIDIFailure
+    #navigator
+    #    .requestMIDIAccess()
+    #    .then onMIDISuccess, onMIDIFailure
