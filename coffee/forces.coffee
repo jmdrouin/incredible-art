@@ -27,8 +27,10 @@ Star::applyIntensityFromVideo = (dt) ->
         @intensity = (@intensity||0) + 0.1 * @factors.videoIntensity * @video.pixels[px[0]][px[1]]
 
 Star::applyIntensityRadius = (dt) ->
-    t=@factors.radius/6
-    @displayRadius = (1-t)*@displayRadius + t * Math.min(0.05/@intensity, 10)
+    t = @factors.radius/6
+    [x, y, r] = @project @p
+    [x, y, z] = @invProject [x, y, 20]
+    @p = [x, y, z]
 
 Star::applyGravity = (dt) ->
     a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0, 0]
