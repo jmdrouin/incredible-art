@@ -3,18 +3,18 @@ console.log "this the basic demo"
 window.demo = ->
     loadImage '/images/cells.png', (pixels) ->
 
-        Star::useImage = yes
-
-        NUMSTARS = 1000
+        NUMSTARS = 20
         SPACING = 4
+        WHITE = 0.1
+        SPEED = 0.01
+
         _.each _.range(NUMSTARS), ->
             spacing = [Star::canvas.width/Math.sqrt(NUMSTARS)*SPACING
                        Star::canvas.height/Math.sqrt(NUMSTARS)*SPACING]
 
             initial = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
             phase = rndv 2, Math.PI
-            WHITE = 0.1
-            SPEED = 0.001
+
             Star::white
                 curve: rnd(-0.002,0.002)
                 p: initial
@@ -39,4 +39,8 @@ window.demo = ->
                           initial[1] + spacing[1]*Math.sin phase[0] + @t
                           100 * Math.cos phase[0] + @t]
 
+        midiMap = {}
+        midiMap[[127, 21]] = (ev) ->
+            pass
+        connectMidi 'Launch Control', midiMap
         starLoop ->
