@@ -16,6 +16,7 @@ class window.Star
     distance: 400
     useImage: no
     debug3d: true
+    displayRadius: null
 
     setCanvas: (canvas) ->
         Star::canvas = canvas
@@ -44,15 +45,16 @@ class window.Star
 
 
     invProject: ([x, y, r]) ->
-        z = @r / r * @factors.size
+        z = @r / (r - @distance) * @factors.size
         x = (x - @factors.movex - @w/2) * z / @zoom
         y = (y - @factors.movey - @h/2) * z / @zoom
         [x, y, z]
 
     draw: ->
         projected = @project @p
-        if @p[2] + @distance < 0.000001
+        if @p[2] + @distance > 0.000001
             [x, y, r] = projected
+            r = @displayRadius or r
             if @useImage
                 @context.drawImage(@starImage, x-2*r, y-2*r, 4*r, 4*r)
             else
@@ -94,14 +96,14 @@ class window.Star
         _.each @whiteList, (s) -> s.update dt
 
     isOutOfCanvas: ->
-        [x, y] = @project @p
+        [x, y] = @p
         x < -Star::canvas.width or
             y < -Star::canvas.height or
             x >= Star::canvas.width or
             y >= Star::canvas.height
 
     pixelPosition: (W,H) ->
-        [x, y] = @project @p
+        [x, y] = @p
         i = x / 2 + Star::canvas.width / 2
         j = y / 2 + Star::canvas.height / 2
         [Math.floor(W*i/@w), Math.floor(H*j/@h)]
