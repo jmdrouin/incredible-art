@@ -4,8 +4,8 @@ window.demo = ->
         Star::pixels = pixels
         Star::useImage = yes
         Star::video = vid
-        Star::videoIntensity = 0
-        Star::imageIntensity = 1
+        Star::videoIntensity = 1
+        Star::imageIntensity = 0
         Star::setUpdateFunctions(Star::applyIntensityFromVideo,
                                  Star::applyIntensityFromImage,
                                  Star::applyIntensityRadius,
@@ -13,15 +13,15 @@ window.demo = ->
                                  Star::applyMovement,
                                  Star::applyRespawn)
 
-        SPEED = 6
+        SPEED = 10
         _.each _.range(1000), ->
             p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
             thestar = Star::white
-                    curve: rnd(0.005)
+                    curve: rnd(0.01)
                     p: p
                     m: 20
                     r: 4
-                    red: 0.2*Math.random()
+                    red: 0.3*Math.random()
                     displayRadius: 4
                     maxg: 0.005
                     v: p.neg().normalize().times(SPEED)

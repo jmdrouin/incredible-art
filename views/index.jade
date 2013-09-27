@@ -46,6 +46,7 @@ html(lang='en')
   body(onLoad="loadStarImage(init)", onresize="resize()", onmousemove="move(event)")
     .container
       canvas.layer(width="1000", height="1000")
+      div#frame
       canvas#secret(width="1000", height="500")
-      video#video(width="320", height="240")
-      canvas#videodump(width="320", height="240")
+      video#video(width="100", height="100")
+      canvas#videodump(width="100", height="100")

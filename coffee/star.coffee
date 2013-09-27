@@ -17,6 +17,7 @@ class window.Star
     useImage: no
     displayRadius: null
     red: 0
+    opacity:1
 
     setCanvas: (canvas) ->
         Star::canvas = canvas
@@ -45,9 +46,9 @@ class window.Star
             r = (@displayRadius or @r/z) * @factors.size
 
             if @useImage
-                @context.globalAlpha = @factors.opacity
+                @context.globalAlpha = @opacity*@factors.opacity*(0.1*Math.random()+0.9)
                 @context.drawImage(@starImage,cx-2*r,cy-2*r,4*r,4*r)
-                @context.globalAlpha *= @red
+                @context.globalAlpha *= @red*(0.1*Math.random()+0.9)
                 @context.drawImage(@redImage,cx-2*r,cy-2*r,4*r,4*r)
             else
                 @context.beginPath()
@@ -94,8 +95,11 @@ class window.Star
 
 window.star = factory Star
 
-window.starLoop = (looper, dt=20) ->
+window.starLoop = (looper, dt=10) ->
     updateStars = (dt) ->
         looper()
         Star::updateAll dt
     setInterval (-> updateStars dt), dt
+
+changeParameters = ->
+    console.log "changeParameters"
