@@ -15,6 +15,7 @@ window.demo = ->
                     p: p
                     m: 20
                     r: 4
+                    displayRadius: 4
                     maxg: 0.005
                     v: p.neg().normalize().times(SPEED)
 

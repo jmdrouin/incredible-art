@@ -13,8 +13,9 @@ class window.Star
     maxg: 10
     color: 'white'
     zoom: 300
-    distance: 500
+    distance: 400
     useImage: no
+    displayRadius: null
 
     setCanvas: (canvas) ->
         Star::canvas = canvas
@@ -44,8 +45,8 @@ class window.Star
                 @context.beginPath()
                 cx = @zoom*x/z+@w/2
                 cy = @zoom*y/z+@h/2
-                r = Math.max(1, @r/z)
-                @context.arc @zoom*x/z+@w/2, @zoom*y/z+@h/2, @r, 0, 2*Math.PI
+                r = @displayRadius or @r/z
+                @context.arc @zoom*x/z+@w/2, @zoom*y/z+@h/2, r, 0, 2*Math.PI
                 @context.fill()
 
     drawWithImage: ->
@@ -67,7 +68,7 @@ class window.Star
 
     updateAll: (dt) ->
         @context.clearRect 0, 0, @canvas.width, @canvas.height;
-        _.each @blackList, (s) -> s.update dt
+        _.each @blackList, (s) -> s.draw()
         @context.fillStyle = "rgba(#{@whiteList[0].color},255)"
         _.each @whiteList, (s) -> s.update dt
 
@@ -95,7 +96,7 @@ class window.Star
 
 window.star = factory Star
 
-window.starLoop = (looper, dt=50) ->
+window.starLoop = (looper, dt=100) ->
     updateStars = (dt) ->
         looper()
         Star::updateAll dt

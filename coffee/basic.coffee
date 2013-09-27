@@ -17,6 +17,8 @@ window.demo = ->
                     r: 500
                     color: '200,0,0'
 
+    Star::setUpdateFunctions(Star::applyGravity, Star::applyMovement)
+
     _.each _.range(200), ->
         Star::white
             p:  [ rnd(-Star::canvas.width/2, Star::canvas.width/2)
@@ -26,9 +28,5 @@ window.demo = ->
             r: 500
             maxg: 0.005
             v: _.flatten [rndv(2, -1/10, 1/10), 0]
-            step: (dt) ->
-                a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0, 0]
-                @v = @v.add a.times dt
-                @p = @p.add @v.times dt
 
     starLoop ->

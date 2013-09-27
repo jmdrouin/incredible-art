@@ -11,7 +11,11 @@ Star::applyIntensityFromVideo = (dt, w) ->
         @intensity *= 0.1 * w * @video.pixels[px[0]][px[1]]
 
 Star::applyIntensityRadius = (dt, w) ->
-    @r = (1-w/2)*@r + (w/2)*Math.min(0.1/@intensity,10)
+    @displayRadius = (1-w/2)*@displayRadius + (w/2)*Math.min(0.1/@intensity,10)
+
+Star::applyGravity = (dt, w) ->
+    a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0, 0]
+    @v = @v.add a.times(dt*w)
 
 Star::applyMovement = (dt, w) ->
     @p = @p.add(@v.times(@intensity*dt))
