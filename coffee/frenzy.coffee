@@ -17,7 +17,7 @@ window.demo = ->
                 curve: rnd(-0.002,0.002)
                 p: initial
                 m: 20
-                r: 500
+                r: 00
                 t: 0
                 maxg: 0.005
                 v: [ 0.6*rnd(-1, 1), 0.6*rnd(-1, 1), 0 ]
