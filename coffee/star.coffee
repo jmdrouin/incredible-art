@@ -88,7 +88,7 @@ class window.Star
     setUpdateFunctions: (functions...) ->
         window.stepsVector = _.map _.range(functions.length), ->1
         @step = (dt) ->
-            @intensity = 0
+            @intensity = null
             that = this
             _.each functions, (f,i)->
                 f.call(that,dt,window.stepsVector[i])
@@ -96,7 +96,7 @@ class window.Star
 
 window.star = factory Star
 
-window.starLoop = (looper, dt=100) ->
+window.starLoop = (looper, dt=50) ->
     updateStars = (dt) ->
         looper()
         Star::updateAll dt
