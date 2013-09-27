@@ -13,7 +13,7 @@ Star::applyIntensityFromVideo = (dt, w) ->
 
 Star::applyIntensityRadius = (dt, w) ->
     t=w/6
-    @displayRadius = (1-t)*@displayRadius + t*Math.min(0.1/@intensity,10)
+    @displayRadius = (1-t)*@displayRadius + t * Math.min(0.05/@intensity, 10)
 
 Star::applyGravity = (dt, w) ->
     a = _.reduce @blackList, ((a, other) => a.diff @gravity(other)), [0, 0, 0]
@@ -28,3 +28,9 @@ Star::applyIntensityFromImage = (dt, w) ->
     else
         px = @pixelPosition(@pixels.length, @pixels[0].length)
         @intensity = (@intensity||0) + 0.1 * w * (@pixels[px[0]][px[1]] + 0.1)
+
+Star::applyHorizontalPull = (dt, w) ->
+    if @p[0] < 0 then @v[0]+=w*dt*0.001 else @v[0]-=w*dt*0.001
+
+Star::applyVerticalPull = (dt, w) ->
+    if @p[1] < 0 then @v[1]+=w*dt*0.001 else @v[1]-=w*dt*0.001

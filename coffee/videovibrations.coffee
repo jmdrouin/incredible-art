@@ -5,11 +5,13 @@ window.demo = ->
         Star::video = vid
         Star::setUpdateFunctions(Star::applyIntensityFromVideo,
                                  Star::applyIntensityRadius,
+                                 Star::applyHorizontalPull,
+                                 Star::applyVerticalPull,
                                  Star::applyRotation,
                                  Star::applyMovement)
 
         SPEED = 4
-        _.each _.range(1000), ->
+        _.each _.range(1500), ->
             p = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
             thestar = Star::white
                     curve: rnd(0.005)

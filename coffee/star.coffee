@@ -61,8 +61,9 @@ class window.Star
         @draw()
 
     updateAll: (dt) ->
+        @context.globalAlpha = 0.3
         @context.clearRect 0, 0, @canvas.width, @canvas.height;
-        _.each @blackList, (s) -> s.draw()
+        #_.each @blackList, (s) -> s.draw()
         @context.fillStyle = "rgba(#{@whiteList[0].color},255)"
         _.each @whiteList, (s) -> s.update dt
 

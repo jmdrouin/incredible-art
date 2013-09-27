@@ -18,6 +18,7 @@ window.demo = ->
                     color: '200,0,0'
 
     Star::setUpdateFunctions(Star::applyGravity, Star::applyMovement)
+    Star::useImage=yes
 
     _.each _.range(200), ->
         Star::white
