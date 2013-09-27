@@ -88,7 +88,7 @@ class window.Star
     setUpdateFunctions: (functions...) ->
         window.stepsVector = _.map _.range(functions.length), ->1
         @step = (dt) ->
-            @intensity = 1
+            @intensity = 0
             that = this
             _.each functions, (f,i)->
                 f.call(that,dt,window.stepsVector[i])

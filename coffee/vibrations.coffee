@@ -1,5 +1,3 @@
-console.log "this the basic demo"
-
 rotate = (p,angle) ->
     s = Math.sin(angle)
     c = Math.cos(angle)
