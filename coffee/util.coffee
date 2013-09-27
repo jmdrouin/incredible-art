@@ -38,6 +38,9 @@ assert -> _.isEqual [1, 2, 3].dot([2, 3, 4]), 20
 Array::neg = ->
     _.map @, (x) -> x * -1
 
+Array::inv = ->
+    _.map @, (x) -> 1 / x
+
 assert -> _.isEqual [1, 2, 3].neg(), [-1, -2, -3]
 
 Array::sqDist = (other) ->

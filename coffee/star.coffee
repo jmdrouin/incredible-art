@@ -42,7 +42,6 @@ class window.Star
             h = @canvas.height
             r = @r/z
             alpha = 255
-            @context.fillStyle = "rgba(#{@color},#{alpha})"
             r = Math.max(r, 1)
             @context.arc @zoom*x/z+w/2, @zoom*y/z+h/2, r, 0, 2*Math.PI
             @context.fill()
@@ -51,8 +50,7 @@ class window.Star
         sd = @p.sqDist other.p
         g = other.m / @m / sd
         g = Math.min g, @maxg
-        r = @p.diff(other.p).normalize().times g
-        r
+        @p.diff(other.p).normalize().times g
 
     update: (dt) ->
         @step?(dt)
@@ -61,6 +59,7 @@ class window.Star
     updateAll: (dt) ->
         @context.clearRect 0, 0, @canvas.width, @canvas.height;
         _.each @blackList, (s) -> s.update dt
+        @context.fillStyle = "rgba(#{@whiteList[0].color},255)"
         _.each @whiteList, (s) -> s.update dt
 
 window.star = factory Star
