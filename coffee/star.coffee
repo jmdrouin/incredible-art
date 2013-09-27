@@ -14,10 +14,13 @@ class window.Star
     color: 'white'
     zoom: 300
     distance: 500
+    useImage: no
 
     setCanvas: (canvas) ->
         Star::canvas = canvas
         Star::context = canvas.getContext('2d')
+        Star::w = canvas.width
+        Star::h = canvas.height
         console.log "canvas is set to", canvas
 
     constructor: (params...) ->
@@ -34,17 +37,25 @@ class window.Star
             _.extend @, x
 
     draw: ->
-        @context.beginPath()
+        if @useImage
+            @drawWithImage()
+        else
+            [x, y, z] = @p
+            z += @distance
+            if z > 0.00001
+                @context.beginPath()
+                cx = @zoom*x/z+@w/2
+                cy = @zoom*y/z+@h/2
+                r = Math.max(1, @r/z)
+                @context.arc @zoom*x/z+@w/2, @zoom*y/z+@h/2, r, 0, 2*Math.PI
+                @context.fill()
+
+    drawWithImage: ->
         [x, y, z] = @p
-        z += @distance
-        if z > 0.00001
-            w = @canvas.width
-            h = @canvas.height
-            r = @r/z
-            alpha = 255
-            r = Math.max(r, 1)
-            @context.arc @zoom*x/z+w/2, @zoom*y/z+h/2, r, 0, 2*Math.PI
-            @context.fill()
+        z+=@distance
+        cx = @zoom*x/z + @w/2
+        cy = @zoom*y/z + @h/2
+        @context.drawImage(@starImage,cx,cy)
 
     gravity: (other) ->
         sd = @p.sqDist other.p

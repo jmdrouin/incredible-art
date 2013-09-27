@@ -7,6 +7,7 @@ rotate = (p,angle) ->
 
 window.demo = ->
     loadImage '/images/cells.png', (pixels) ->
+        Star::useImage = yes
 
         _.each _.range(2000), ->
             Star::white

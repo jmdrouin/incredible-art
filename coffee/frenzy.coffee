@@ -3,7 +3,9 @@ console.log "this the basic demo"
 window.demo = ->
     loadImage '/images/cells.png', (pixels) ->
 
-        NUMSTARS = 5000
+        Star::useImage = yes
+
+        NUMSTARS = 1000
         SPACING = 4
         _.each _.range(NUMSTARS), ->
             spacing = [Star::canvas.width/Math.sqrt(NUMSTARS)*SPACING
@@ -12,7 +14,7 @@ window.demo = ->
             initial = [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
             phase = rndv 2, Math.PI
             WHITE = 0.1
-            SPEED = 0.01
+            SPEED = 0.001
             Star::white
                 curve: rnd(-0.002,0.002)
                 p: initial

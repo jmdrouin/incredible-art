@@ -7,13 +7,13 @@ rotate = (p,angle) ->
 
 window.demo = ->
     activateVideo (vid) ->
-
+        Star::useImage = yes
         _.each _.range(2000), ->
             Star::white
-                curve: rnd(-0.002,0.002)
+                curve: 0.001
                 p: [ Star::canvas.width*rnd(-1,1), Star::canvas.height*rnd(-1,1), 0]
                 m: 20
-                r: 2
+                r: 3
                 maxg: 0.005
                 v: [ 5*rnd(-1, 1), 5*rnd(-1, 1), 0 ]
                 step: (dt) ->
@@ -34,7 +34,6 @@ window.demo = ->
 
                     @v = rotate(@v,@curve * dt)
                     @p = @p.add(@v.times(dt*intensity))
-                    @color = 'red'
 
         starLoop ->
             window.P = vid.update()
