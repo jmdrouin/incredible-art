@@ -4,7 +4,7 @@ window.demo = ->
     pic =
         [[0, 0, 0, 0, 0]
         ,[0, 0, 0, 0, 0]
-        ,[0, 0, 1, 0, 0]
+        ,[1, 0, 0, 0, 1]
         ,[0, 0, 0, 0, 0]
         ,[0, 0, 0, 0, 0]]
     scale = 200
@@ -17,7 +17,7 @@ window.demo = ->
                     r: 500
                     color: '200,0,0'
 
-    _.each _.range(1000), ->
+    _.each _.range(200), ->
         Star::white
             p:  [ rnd(-Star::canvas.width/2, Star::canvas.width/2)
                 , rnd(-Star::canvas.height/2, Star::canvas.height/2)
