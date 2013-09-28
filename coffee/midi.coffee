@@ -1,6 +1,7 @@
 console.log "this the midi shit"
 
 window.connectMidi = (device, midiMap) ->
+    console.log "TRYING MIDI ", device
 
     onMIDIFailure = (err) ->
         console.log "FAILED TO CONNECT MIDI", err
@@ -37,6 +38,4 @@ window.connectMidi = (device, midiMap) ->
         console.log "FOUND DEVICE", input, output
         input.onmidimessage = onMIDIMessage
 
-    #navigator
-    #    .requestMIDIAccess()
-    #    .then onMIDISuccess, onMIDIFailure
+    navigator?.requestMIDIAccess?()?.then onMIDISuccess, onMIDIFailure
